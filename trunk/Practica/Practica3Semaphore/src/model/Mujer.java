@@ -3,22 +3,22 @@ package model;
 public class Mujer extends Persona {
 
 	// Constructor
-	public Mujer(String nombre, Banio baño) {
-		this.setBanio(baño);
+	public Mujer(String nombre, Banio baÃ±o) {
+		this.setBanio(baÃ±o);
 		this.setNombre(nombre);
 	}
 
 	/**
-	 * Entra al Baño y sale. Luego Duerme 1 Segundo y vuelve a intentar entrar
+	 * Entra al Baï¿½o y sale. Luego Duerme 1 Segundo y vuelve a intentar entrar
 	 */
 	@Override
 	public void run() {
 		while (true) {
 			this.getBanio().ingresaAlBanioUnaMujer();
-			System.out.println(this.getNombre() + " Entro al Baño");
+			System.out.println(this.getNombre() + " Entro al Baï¿½o");
 			// Seccion Critica
 			this.getBanio().saleDelBanioUnaMujer();
-			System.out.println(this.getNombre() + " Salio del Baño");
+			System.out.println(this.getNombre() + " Salio del Baï¿½o");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
