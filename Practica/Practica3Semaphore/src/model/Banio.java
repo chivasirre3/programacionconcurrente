@@ -38,6 +38,7 @@ public class Banio {
 	 * Ingresa un Hombre.
 	 */
 	public void ingresaAlBanioUnHombre(){ //Ver Esto
+		this.mutex.acquireUninterruptibly();
 		if(this.cantHombres==0){
 			try {
 				this.solo.acquire();
@@ -51,9 +52,10 @@ public class Banio {
 			this.getToilets().acquireUninterruptibly();
 			this.cantHombres+=1;
 		}
+		this.mutex.release();
 	}
 	/**
-	 * Sale Del Baño un Hombre.
+	 * Sale Del Baï¿½o un Hombre.
 	 */
 	public void saleDelBanioUnHombre(){
 		this.mutex.acquireUninterruptibly();

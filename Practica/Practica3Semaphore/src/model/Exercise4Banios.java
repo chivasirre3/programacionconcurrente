@@ -17,8 +17,8 @@ public class Exercise4Banios {
 		 */
 		List<Persona> personas= new ArrayList<Persona>();
 		personas.add(new Hombre("Jorge" , unisex));
-		personas.add(new Mujer("Catalina" , unisex));
-		personas.add(new Hombre("Rogelio" , unisex));
+		personas.add(new Mujer("Susy" , unisex));
+		personas.add(new Hombre("Roberto" , unisex));
 		personas.add(new Mujer("Rosita" , unisex));
 		personas.add(new Hombre("Domingo" , unisex));
 		personas.add(new Mujer("Virgilia" , unisex));
