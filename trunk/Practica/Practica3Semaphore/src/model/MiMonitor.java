@@ -10,7 +10,7 @@ public class MiMonitor {
 		System.out.println(i);
 	}
 
-	public  int get() {
+	public synchronized int get() {
 		return i;
 	}
 
