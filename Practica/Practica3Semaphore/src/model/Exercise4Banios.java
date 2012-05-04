@@ -7,7 +7,7 @@ public class Exercise4Banios {
 
 	public static void main(String[] args) {
 		/**
-		 * Creo el Banio
+		 * Creo el Banio.
 		 */
 		Banio unisex= new Banio(2);
 		
