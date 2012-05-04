@@ -3,8 +3,8 @@ package model;
 public class Hombre extends Persona {
 
 	// Constructor
-	public Hombre(String nombre, Banio baño) {
-		this.setBanio(baño);
+	public Hombre(String nombre, Banio banio) {
+		this.setBanio(banio);
 		this.setNombre(nombre);
 	}
 
@@ -15,9 +15,9 @@ public class Hombre extends Persona {
 	public void run() {
 		while (true) {
 			this.getBanio().ingresaAlBanioUnHombre();
-			System.out.println(this.getNombre() + " Entro al Ba�o");
+			System.out.println(this.getNombre() + " Entro al Banio");
 			// Seccion Critica
-			System.out.println(this.getNombre() + " Salio del Ba�o");
+			System.out.println(this.getNombre() + " Salio del Banio");
 			this.getBanio().saleDelBanioUnHombre();
 			try {
 				Thread.sleep(1000);
