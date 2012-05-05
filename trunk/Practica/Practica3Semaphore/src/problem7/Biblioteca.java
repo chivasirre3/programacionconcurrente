@@ -16,6 +16,11 @@ public class Biblioteca {
 	private static Boolean escritorEscribiendo=false;
 	private static List<Tupla> cola= new LinkedList<Tupla>();
 	
+	
+	public static void write(Escritor escritor){
+		lock.lock();
+		
+	}
 	public  static void leer(Lector lector) {
 		try {
 			System.out.println("El Lector:" + lector.nombre + " Esta Leyendo.");
