@@ -1,0 +1,8 @@
+
+5)Hemodialisis!
+
+A)
+procesos Concurrentes: Las Personas a ser atendidas.
+recursos Compartidos: Las Revistas y Las Camillas.
+
+B)
