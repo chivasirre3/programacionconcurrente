@@ -19,20 +19,7 @@ public class Banio {
 		this.setToilets(new Semaphore(cantidadToilets , true));
 		this.solo= new Semaphore(1);
 		this.mutex= new Semaphore(1);
-	}
-	/**
-	 * Retorna True si no hay ninguna Mujer En el banio.
-	 * @return Boolean
-	 */
-	public Boolean puedeEntrarHombre(){
-		return this.getCantMujeres() == 0;
-	}
-	/**
-	 * Retorna True si no hay ningun Hombre en el banio.
-	 * @return Boolean
-	 */
-	public Boolean puedeEntrarMujer(){
-		return this.getCantHombres() == 0;
+		this.mutexE= new Semaphore(1);
 	}
 	/**
 	 * Ingresa un Hombre.
@@ -42,62 +29,66 @@ public class Banio {
 		if(this.cantHombres==0){
 			try {
 				this.solo.acquire();
-				this.getToilets().acquireUninterruptibly();
-				this.cantHombres+=1;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		else{
-			this.getToilets().acquireUninterruptibly();
-			this.cantHombres+=1;
-		}
 		this.mutex.release();
-	}
-	/**
-	 * Sale Del Baï¿½o un Hombre.
-	 */
-	public void saleDelBanioUnHombre(){
+		
+		this.getToilets().acquireUninterruptibly();
+		System.out.println("Entro Al Baño Un Hombre");
+		this.mutex.acquireUninterruptibly();
+		this.cantHombres+=1;
+		this.mutex.release();
+		
+		//Uso el baño.
+		
 		this.mutex.acquireUninterruptibly();
 		this.cantHombres-=1;
 		this.mutex.release();
+		
 		if(this.cantHombres == 0){
 			this.solo.release();
-			}
+		}
+		System.out.println("Salio del Baño Un Hombre");
 		this.getToilets().release();
+		
 		
 	}
 	/**
 	 * Ingresa una Mujer.
 	 */
 	public void ingresaAlBanioUnaMujer(){
-		this.mutex.acquireUninterruptibly();
+		
+		this.mutexE.acquireUninterruptibly();
 		if(this.cantMujeres==0){
 			try {
 				this.solo.acquire();
-				this.getToilets().acquireUninterruptibly();
-				this.cantMujeres+=1;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		else{
-			this.getToilets().acquireUninterruptibly();
-			this.cantMujeres+=1;
-		}
-		this.mutex.release();
-	}
-	/**
-	 * Sale Del banio una Mujer.
-	 */
-	public void saleDelBanioUnaMujer(){
-		this.mutex.acquireUninterruptibly();
+		this.mutexE.release();
+		
+		
+		this.getToilets().acquireUninterruptibly();
+		
+		this.mutexE.acquireUninterruptibly();
+		System.out.println("Entro Al Baño Una Mujer");
+		this.cantMujeres+=1;
+		this.mutexE.release();
+
+		//Uso el baño
+		
+		this.mutexE.acquireUninterruptibly();
 		this.cantMujeres-=1;
+		this.mutexE.release();
+		
 		if(this.cantMujeres == 0){
 			this.solo.release();
-			}
+		}
+		System.out.println("Salio Del Baño Una Mujer");
 		this.getToilets().release();
-		this.mutex.release();
 	}
 	
 	//Getters & Setters

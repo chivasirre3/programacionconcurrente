@@ -15,10 +15,6 @@ public class Mujer extends Persona {
 	public void run() {
 		while (true) {
 			this.getBanio().ingresaAlBanioUnaMujer();
-			System.out.println(this.getNombre() + " Entro al Banio");
-			// Seccion Critica
-			this.getBanio().saleDelBanioUnaMujer();
-			System.out.println(this.getNombre() + " Salio del Banio");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
