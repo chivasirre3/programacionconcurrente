@@ -23,16 +23,7 @@ public class Paciente {
 		this.estaEnCamilla = false;
 		this.seFue=false;
 	}
-	/**
-	 * Este metodo se llama cuando se interrumpe el Thread y esta para que si el paciente
-	 * tiene una revista la devuelva.
-	 */
-	public void devolverRevista() {
-		if(tieneRevista){
-			tieneRevista=false;
-			clinica.revistero.release();
-		}
-	}
+	
 	
 	/**
 	 * Le doy el comportamiento a  los 2 thread y los hace Correr los 2 threads
@@ -44,6 +35,7 @@ public class Paciente {
 				while (!estaEnCamilla && !seFue ) {
 					try {
 						System.out.println("Espera la revista" + nombre);
+						mutex.acquireUninterruptibly();
 						clinica.revistero.acquireUninterruptibly();
 						System.out.println("Lee la revista" + nombre);
 						tieneRevista = true;
@@ -51,6 +43,7 @@ public class Paciente {
 						tieneRevista = false;
 						System.out.println("Dejo la revista" + nombre);
 						clinica.revistero.release();
+						mutex.release();
 
 					} catch (InterruptedException e) {
 						System.out.println("Se Interrumpio La Lectura porque Fue Atendido: " + nombre);
@@ -64,12 +57,12 @@ public class Paciente {
 				try {
 					System.out.println("Esperando a entrear a  Sala " + nombre);
 					clinica.sala.acquireUninterruptibly();
+					estaEnCamilla = true;
 					if (tieneRevista) {
-						threadRevista.interrupt();
-						devolverRevista();
+						System.out.println("Dejando La Revista " + nombre);
+						mutex.acquireUninterruptibly();//Adquiero el semaforo para esperar a que largue la revista.						
 					}
 					System.out.println("Entro a Sala" + nombre);
-					estaEnCamilla = true;
 					Thread.sleep(2000);
 					System.out.println("Salio De Sala " + nombre);
 					clinica.sala.release();

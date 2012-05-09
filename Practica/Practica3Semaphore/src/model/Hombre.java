@@ -13,7 +13,7 @@ public class Hombre extends Persona {
 	 */
 	@Override
 	public void run() {
-		while (true) {
+		while (true){
 			this.getBanio().ingresaAlBanioUnHombre();
 			try {
 				Thread.sleep(1000);
