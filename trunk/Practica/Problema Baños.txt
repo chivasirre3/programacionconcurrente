@@ -1,0 +1,46 @@
+
+sem mutex= 1
+sem escribir=1
+numero lectores=0
+numero escritores=0
+sem mutexE= 1
+sem leer=1
+
+Escritor////
+wait(mutexE)
+escritores++
+if escritores == 1{
+	wait (leer)
+	}
+signal(mutexE)
+
+wait(escribir)	
+//Escribir
+signal(Escribir)
+
+wait(mutexE)
+escritores--
+if(escritores==0){
+	signal(leer)
+}
+release(mutexE)
+
+
+Lector////
+
+wait(Leer)
+wait(mutex)
+lectores++
+if(num lectores == 1){
+	wait(escribir)
+	}
+signal (mutex)	
+signal (leer)	
+//LEE
+wait(mutex)
+num lectores--
+wait (mutex)
+if(num lectores ==0){
+	signal(escribir)
+	}
+signal (mutex)
