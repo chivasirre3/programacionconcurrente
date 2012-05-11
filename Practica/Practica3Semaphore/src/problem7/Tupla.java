@@ -15,4 +15,15 @@ public class Tupla {
 			this.cantidad=1;
 		}
 		
+		public String imprimir(){
+			if(escritor & !lector){
+				return "escritor" + cantidad;
+			}
+
+			if(!escritor & lector){
+				return "lector" + cantidad;
+			}
+			return "Melo puto";
+		}
+		
 }

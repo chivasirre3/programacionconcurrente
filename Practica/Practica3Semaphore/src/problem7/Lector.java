@@ -19,6 +19,10 @@ public class Lector extends Thread {
 			try {
 				Thread.sleep(new Random().nextInt(1000) + 500);
 				Biblioteca.llegarLector(this);//en este metodo se hacen los otros 2(Leer e Irse)
+				System.out.println(nombre + " empieza a leer");				
+				Thread.sleep(new Random().nextInt(1000) + 500);
+				System.out.println(nombre + " termina de leer");
+				Biblioteca.lectorSeVa(this);
 				//Biblioteca.leer(this);
 				//Biblioteca.lectorSeVa();
 			} catch (InterruptedException e) {
