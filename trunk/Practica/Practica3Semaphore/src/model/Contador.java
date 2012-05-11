@@ -11,35 +11,21 @@ public class Contador {
 	}
 	
 	public static void main(String[] args) {
-
-		Thread t1= new Thread(new Runnable() {
-			
-			public void run() {
-				while(true){
-					sumar();
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
+		for (int i = 0; i < 100; i++) {
+			new Thread(new Runnable() {
+				
+				public void run() {
+					while(true){
+						sumar();
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
-			}
-		});
-		Thread t2= new Thread(new Runnable() {
-			
-			public void run() {
-				while(true){
-					sumar();
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		t1.start();
-		t2.start();
+			}).start();
+		}
 	}
 
 }
