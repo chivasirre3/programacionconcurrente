@@ -19,14 +19,8 @@ public class Escritor extends Thread {
 			try {
 				Thread.sleep(new Random().nextInt(500) + 300);
 				Biblioteca.llegarEscritor(this);//en este metodo se hacen los otros 2(escribir e Irse)
-				System.out.println(nombre + "Empieza a escribir");
-				
-				Thread.sleep(new Random().nextInt(500) + 300);
-				
-				System.out.println(nombre + "termina de escribir");
+				Biblioteca.escribir(this);
 				Biblioteca.escritorSeVa(this);
-				//Biblioteca.escribir(this);
-				//Biblioteca.escritorSeVa(this);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
