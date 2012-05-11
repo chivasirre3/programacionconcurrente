@@ -1,12 +1,12 @@
-package problem7;
+package lectoresEscritoresCola;
 
 import java.util.Random;
 
-public class Lector extends Thread {
+public class Escritor extends Thread {
 
 	public String nombre;
 
-	public Lector(String nombre) {
+	public Escritor(String nombre) {
 		this.nombre = nombre;
 	}
 	public String toString(){
@@ -14,17 +14,14 @@ public class Lector extends Thread {
 	}
 
 	public void run() {
-		for (int i = 0; i < 5; i++) {
-		//while(true){	
+		while(true) {
 			try {
 				Thread.sleep(new Random().nextInt(1000) + 500);
-				Biblioteca.llegarLector(this);//en este metodo se hacen los otros 2(Leer e Irse)
-				//Biblioteca.leer(this);
-				//Biblioteca.lectorSeVa();
+				Biblioteca.escribir(this);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
+
 }

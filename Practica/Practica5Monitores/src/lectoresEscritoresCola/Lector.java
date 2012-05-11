@@ -1,4 +1,4 @@
-package problem7;
+package lectoresEscritoresCola;
 
 import java.util.Random;
 
@@ -14,13 +14,10 @@ public class Lector extends Thread {
 	}
 
 	public void run() {
-		for (int i = 0; i < 5; i++) {
-		//while(true){	
+		while(true){	
 			try {
 				Thread.sleep(new Random().nextInt(1000) + 500);
-				Biblioteca.llegarLector(this);//en este metodo se hacen los otros 2(Leer e Irse)
-				//Biblioteca.leer(this);
-				//Biblioteca.lectorSeVa();
+				Biblioteca.leer(this);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
