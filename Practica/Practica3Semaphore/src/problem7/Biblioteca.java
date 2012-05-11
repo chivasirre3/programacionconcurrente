@@ -1,7 +1,6 @@
 package problem7;
 
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -14,7 +13,7 @@ public class Biblioteca {
 	public static Condition escritores = lock.newCondition();
 	private static Integer lectoresLeyendo = 0;
 	private static Boolean escritorEscribiendo = false;
-	public static List<Tupla> cola = new LinkedList<Tupla>();
+	public static List<Tupla> cola = new ArrayList<Tupla>();
 
 	/**
 	 * El lector llega y lee. si no puede leer porque hay esperando o
@@ -33,14 +32,6 @@ public class Biblioteca {
 		//leer(lector);
 	}
 
-	private static void imprimriTuplas() {
-		String pantalla = "";
-		for (Tupla t:cola) {
-			pantalla += t.imprimir();			
-		}
-		System.out.println(pantalla);
-	
-	}
 
 	/**
 	 * El lector lee y se va.
@@ -52,10 +43,9 @@ public class Biblioteca {
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		lectorSeVa(lector);
+		//lectorSeVa(lector);
 	}
 
 	/**
@@ -93,16 +83,13 @@ public class Biblioteca {
 		lock.lock();
 		if (!Biblioteca.cola.isEmpty()	&& Biblioteca.cola.get(Biblioteca.cola.size() - 1).lector) {
 			Biblioteca.cola.get(Biblioteca.cola.size() - 1).cantidad += 1;
-			System.out.println("incremento lectores en tupla");
 		} 
 		else {
-			System.out.println("creo tupla de lectores");
 			Tupla nueva = new Tupla(true, false);
 			cola.add(nueva);
 		}
 
 		try {
-			imprimriTuplas();
 			lectores.await();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -139,20 +126,15 @@ public class Biblioteca {
 		if (!Biblioteca.cola.isEmpty() && Biblioteca.cola.get(Biblioteca.cola.size() - 1).escritor) {
 			try {
 				Biblioteca.cola.get(Biblioteca.cola.size() - 1).cantidad += 1;
-				System.out.println("incremento escritores en tupla");
-				imprimriTuplas();
-
 				escritores.await();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 		} else {
-			System.out.println("creo tupla escritores");
 			Tupla nueva = new Tupla(false, true);
 			cola.add(nueva);
 			try {
-				imprimriTuplas();
 				escritores.await();
 
 			} catch (InterruptedException e) {
@@ -173,7 +155,7 @@ public class Biblioteca {
 		lock.lock();
 		System.out.println("El Escritor:" + escritor.nombre
 				+ " Esta Escribiendo.");
-		Biblioteca.escritorSeVa(escritor);
+		//Biblioteca.escritorSeVa(escritor);
 		lock.unlock();
 	}
 
@@ -185,8 +167,7 @@ public class Biblioteca {
 	 */
 	public static void escritorSeVa(Escritor escritor) {
 		lock.lock();
-		//System.out.println("El Escritor:" + escritor.nombre
-		//		+ " Termino De Escribir.");
+		System.out.println("El Escritor:" + escritor.nombre + " Termino De Escribir.");
 		escritorEscribiendo = false;
 		if (!cola.isEmpty() && cola.get(0).lector) { 
 			System.out.println("Se Despertaron: " + cola.get(0).cantidad + " Lectores a");
@@ -197,13 +178,11 @@ public class Biblioteca {
 			cola.remove(0);
 		} else if (!cola.isEmpty() && cola.get(0).escritor) {
 			System.out.println("Se Desperto 1 Escritor a");
-			cola.get(0).cantidad--;
-			System.out.println(cola.get(0).cantidad);
+			cola.get(0).cantidad-=1;
 			escritores.signal();
 			escritorEscribiendo = true;
 			if (cola.get(0).cantidad == 0) {
 				cola.remove(0);
-				System.out.println("Se remueve latupla de escritores");
 			}
 		}
 		lock.unlock();
@@ -211,8 +190,12 @@ public class Biblioteca {
 
 	public static void main(String[] args) {
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 2; i++) {
 			new Lector("Lector" + i).start();
+			//new Escritor("Escritor" + i).start();
+		}
+		for (int i = 0; i < 1; i++) {
+			//new Lector("Lector" + i).start();
 			new Escritor("Escritor" + i).start();
 		}
 
