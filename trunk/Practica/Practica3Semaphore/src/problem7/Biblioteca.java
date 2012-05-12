@@ -15,21 +15,15 @@ public class Biblioteca {
 	private static Boolean escritorEscribiendo = false;
 	public static List<Tupla> cola = new ArrayList<Tupla>();
 
-	/**
-	 * El lector llega y lee. si no puede leer porque hay esperando o
-	 * escribiendo este se pone a esperar en la cola.
-	 * 
-	 * @param Lector
-	 *            lector
-	 */
 	public static void llegarLector(Lector lector) {
 		lock.lock();
 		if(escritorEscribiendo || !cola.isEmpty()) {
 			dormirLector();
 		}
-		lectoresLeyendo++;
+		else{
+			lectoresLeyendo++;			
+		}
 		lock.unlock();
-		//leer(lector);
 	}
 
 
@@ -45,30 +39,30 @@ public class Biblioteca {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//lectorSeVa(lector);
 	}
 
 	/**
-	 * EL Lector Se va y libera si hay otros esperando.
+	 * EL Lector Se va y libera escritores si hay  esperando.
 	 */
 	public static void lectorSeVa(Lector lector) {
 		lock.lock();
 		System.out.println("El Lector:" + lector.nombre + " termino de leer.");
 		lectoresLeyendo--;
-		if (!cola.isEmpty() && cola.get(0).escritor && lectoresLeyendo == 0) { 
-			System.out.println("Se Desperto 1 Escritor b");
-			cola.get(0).cantidad--;
-			escritores.signal();
-			if (cola.get(0).cantidad == 0) {
-				cola.remove(0);
-			}
 
-		} else if (!cola.isEmpty() && cola.get(0).lector) {
-			System.out.println("Se Despertaron: " + cola.get(0).cantidad + " Lectores b");
-			for (int j = 0; j < cola.get(0).cantidad; j++) {
-				lectores.signal();
+		System.out.println("");
+		System.out.println("Se setea lectoresLeyendo = " + lectoresLeyendo);
+		System.out.println("");
+		
+		if (!cola.isEmpty()){
+			if(lectoresLeyendo == 0){
+				if(cola.get(0).escritor) { 
+					cola.get(0).cantidad--;
+					escritores.signal();
+					if (cola.get(0).cantidad == 0) {
+						cola.remove(0);
+					}
+				} 
 			}
-			cola.remove(0);
 		}
 		lock.unlock();
 	}
@@ -111,7 +105,6 @@ public class Biblioteca {
 			dormirEscritor();
 		}
 		escritorEscribiendo = true;
-		//escribir(escritor);
 		lock.unlock();
 	}
 
@@ -145,44 +138,34 @@ public class Biblioteca {
 		lock.unlock();
 	}
 
-	/**
-	 * El escritor escribe y despues se va.
-	 * 
-	 * @param Escritor
-	 *            escritor
-	 */
 	public static void escribir(Escritor escritor) {
 		lock.lock();
-		System.out.println("El Escritor:" + escritor.nombre
-				+ " Esta Escribiendo.");
-		//Biblioteca.escritorSeVa(escritor);
+		System.out.println("El Escritor:" + escritor.nombre	+ " Esta Escribiendo.");
 		lock.unlock();
 	}
 
-	/**
-	 * El Escritor se retira y si hay en cola de espera los despierta.
-	 * 
-	 * @param Escritor
-	 *            escritor
-	 */
 	public static void escritorSeVa(Escritor escritor) {
 		lock.lock();
 		System.out.println("El Escritor:" + escritor.nombre + " Termino De Escribir.");
 		escritorEscribiendo = false;
-		if (!cola.isEmpty() && cola.get(0).lector) { 
-			System.out.println("Se Despertaron: " + cola.get(0).cantidad + " Lectores a");
-			lectoresLeyendo = cola.get(0).cantidad;
-			for (int i = 0; i < cola.get(0).cantidad; i++) {
-				lectores.signal();
-			}
-			cola.remove(0);
-		} else if (!cola.isEmpty() && cola.get(0).escritor) {
-			System.out.println("Se Desperto 1 Escritor a");
-			cola.get(0).cantidad-=1;
-			escritores.signal();
-			escritorEscribiendo = true;
-			if (cola.get(0).cantidad == 0) {
+		if (!cola.isEmpty()){
+			if(cola.get(0).lector) { 
+				lectoresLeyendo = cola.get(0).cantidad;
+				System.out.println("");
+				System.out.println("Se setea lectoresLeyendo = " + lectoresLeyendo);
+				System.out.println("");
+				for (int i = 0; i < cola.get(0).cantidad; i++) {
+					lectores.signal();
+				}
 				cola.remove(0);
+			}
+			else {
+				cola.get(0).cantidad-=1;
+				escritorEscribiendo = true;
+				if (cola.get(0).cantidad == 0) {
+					cola.remove(0);
+				}
+				escritores.signal();
 			}
 		}
 		lock.unlock();
@@ -190,14 +173,12 @@ public class Biblioteca {
 
 	public static void main(String[] args) {
 
-		for (int i = 0; i < 2; i++) {
+			
+		for (int i = 0; i < 500; i++) {
 			new Lector("Lector" + i).start();
-			//new Escritor("Escritor" + i).start();
+			if(i%10 == 0){
+				new Escritor("Escritor" + i/10).start();
+			}
 		}
-		for (int i = 0; i < 1; i++) {
-			//new Lector("Lector" + i).start();
-			new Escritor("Escritor" + i).start();
-		}
-
 	}
 }
