@@ -37,7 +37,6 @@ signal (leer)
 //LEE
 wait(mutex)
 num lectores--
-signal (mutex)
 if(num lectores ==0){
 	signal(escribir)
 	}
