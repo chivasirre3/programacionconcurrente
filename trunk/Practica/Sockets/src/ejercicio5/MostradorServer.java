@@ -1,5 +1,6 @@
 package ejercicio5;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MostradorServer extends Thread {
@@ -10,9 +11,11 @@ public class MostradorServer extends Thread {
 	Integer datosEnBuffer;
 	
 	public MostradorServer(Integer tamanioBuffer){
-		this.datos = new String[tamanioBuffer];
+		this.datos = new ArrayList<String>();
 	}
 
-	public synchronized void agregarDato
+	public synchronized void agregarDato(){
+		//TODO: Agregar Logica.
+	}
 	
 }
