@@ -1,0 +1,48 @@
+
+
+
+
+syncronized empiezaALeer(){
+	lectores++
+}
+
+syncronized terminaDeLeer(){
+	
+	lectores--;
+	if(lectores==0){
+		//notifico en la condition para que puedan leer
+		}
+}
+
+
+
+read(){
+	empiezaALeer()
+	//Lee
+	terminaDeLeer()
+}
+syncronized write(){
+	while(lectores>0){
+		wait()
+		}
+	//escribe	
+}
+
+usando bloques syncronizados con java
+
+Read(){
+	syncronized(this){
+		lectores++;
+	}
+	Leer
+	syncronized(this){
+		lectores--;
+		if(lectores==0){
+			//notify
+		}
+	}
+}
+
+
+syncronized(Clase.class){ //Esto Lockea todas las instancias de esa clase.
+}
