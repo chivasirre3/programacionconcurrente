@@ -15,7 +15,6 @@ public class ClienteAdivino {
 			PrintStream clienteOut = new
 			PrintStream(socketcliente.getOutputStream());
 			BufferedReader clienteIn = new BufferedReader(new InputStreamReader(socketcliente.getInputStream()));
-			
 			Boolean seguir= true;
 			while(seguir){
 				clienteOut.println(8);
